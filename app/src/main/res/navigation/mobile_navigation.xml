@@ -15,11 +15,65 @@
         android:id="@+id/navigation_dashboard"
         android:name="com.example.cs2340gr76.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard">
+        <action
+            android:id="@+id/action_navigation_dashboard_to_navigation_assignments"
+            app:destination="@id/navigation_assignments" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_navigation_classes"
+            app:destination="@id/navigation_classes" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_navigation_exams"
+            app:destination="@id/navigation_exams" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_navigation_todo"
+            app:destination="@id/navigation_todo" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.example.cs2340gr76.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_classes"
+        android:name="com.example.cs2340gr76.ui.classes.ClassesFragment"
+        android:label="@string/class_schedule_info"
+        tools:layout="@layout/fragment_classes" >
+        <action
+            android:id="@+id/action_navigation_classes_to_navigation_dashboard"
+            app:destination="@id/navigation_dashboard" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_assignments"
+        android:name="com.example.cs2340gr76.ui.assignments.AssignmentsFragment"
+        android:label="@string/assignments"
+        tools:layout="@layout/fragment_assignments" >
+        <action
+            android:id="@+id/action_navigation_assignments_to_navigation_dashboard"
+            app:destination="@id/navigation_dashboard" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_exams"
+        android:name="com.example.cs2340gr76.ui.notifications.NotificationsFragment"
+        android:label="@string/exams"
+        tools:layout="@layout/fragment_exams" >
+        <action
+            android:id="@+id/action_navigation_exams_to_navigation_dashboard"
+            app:destination="@id/navigation_dashboard" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_todo"
+        android:name="com.example.cs2340gr76.ui.todo.ToDoFragment"
+        android:label="@string/to_do_list"
+        tools:layout="@layout/fragment_todo" >
+        <action
+            android:id="@+id/action_navigation_todo_to_navigation_dashboard"
+            app:destination="@id/navigation_dashboard" />
+    </fragment>
+
 </navigation>
