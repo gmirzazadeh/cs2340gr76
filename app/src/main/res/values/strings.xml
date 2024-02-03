@@ -1,6 +1,10 @@
 <resources>
-    <string name="app_name">CS2340gr76</string>
+    <string name="app_name">College Scheduler</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="class_schedule_info">Class Schedule Info</string>
+    <string name="assignments">Assignments</string>
+    <string name="exams">Exams</string>
+    <string name="to_do_list">To-Do List</string>
 </resources>
