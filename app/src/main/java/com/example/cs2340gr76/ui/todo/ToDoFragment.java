@@ -1,5 +1,6 @@
 package com.example.cs2340gr76.ui.todo;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,23 +10,30 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 
 import com.example.cs2340gr76.databinding.FragmentTodoBinding;
 import com.example.cs2340gr76.ui.todo.Adapter.ToDoAdapter;
 import com.example.cs2340gr76.ui.todo.Model.ToDoModel;
+import com.example.cs2340gr76.ui.todo.Utils.DatabaseHandler;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
+
+import java.util.Collections;
 import java.util.List;
 
 
-public class ToDoFragment extends Fragment {
+public class ToDoFragment extends Fragment implements DialogCloseListener {
 
     private FragmentTodoBinding binding;
     private RecyclerView tasksRecyclerView;
+    private FloatingActionButton fab;
     private ToDoAdapter tasksAdapter;
     private List<ToDoModel> taskList;
+    private DatabaseHandler db;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -36,28 +44,26 @@ public class ToDoFragment extends Fragment {
         View root = binding.getRoot();
 
         final TextView textView = binding.textTodo;
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
-        taskList = new ArrayList<>();
+        db = new DatabaseHandler(this.getContext());
+        db.openDatabase();
 
         tasksRecyclerView = binding.tasksRecylerView;
         tasksRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        tasksAdapter = new ToDoAdapter(this);
+        tasksAdapter = new ToDoAdapter(db, this);
         tasksRecyclerView.setAdapter(tasksAdapter);
 
-        ToDoModel task = new ToDoModel();
-        task.setTask("This is a test");
-        task.setStatus(0);
-        task.setId(1);
+        fab = binding.tasksFab;
 
-        taskList.add(task);
-        taskList.add(task);
-        taskList.add(task);
-        taskList.add(task);
-        taskList.add(task);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new RecylcerItemTouchHelper(tasksAdapter));
+        itemTouchHelper.attachToRecyclerView(tasksRecyclerView);
 
+        taskList = db.getAllTasks();
+        Collections.reverse(taskList);
         tasksAdapter.setTasks(taskList);
+        tasksAdapter.notifyItemChanged(0, taskList.size());
 
+        fab.setOnClickListener(v -> AddNewTask.newInstance().show(getParentFragmentManager(), AddNewTask.TAG));
         return root;
     }
 
@@ -65,5 +71,13 @@ public class ToDoFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void handleDialogClose(DialogInterface dialog) {
+        taskList = db.getAllTasks();
+        Collections.reverse(taskList);
+        tasksAdapter.setTasks(taskList);
+        tasksAdapter.notifyItemChanged(0, taskList.size());
     }
 }
