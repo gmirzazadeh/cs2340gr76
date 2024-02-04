@@ -144,4 +144,3 @@ public class AddNewAssignment extends BottomSheetDialogFragment {
             ((DialogCloseListener) fragment).handleDialogClose(dialog);
         }
     }
-}
