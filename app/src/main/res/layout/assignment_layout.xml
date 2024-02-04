@@ -51,7 +51,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    tools:text="Date"
+                    tools:text="Date (MM DD, YYYY)"
                     android:textSize="14sp" />
 
                 <TextView
@@ -59,7 +59,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    tools:text="Time"
+                    tools:text="Military-Time (00:00)"
                     android:textSize="14sp" />
 
             </LinearLayout>
