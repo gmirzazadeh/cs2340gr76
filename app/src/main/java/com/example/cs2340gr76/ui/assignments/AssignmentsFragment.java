@@ -39,6 +39,8 @@ public class AssignmentsFragment extends Fragment implements DialogCloseListener
     private AssignmentsAdapter assignmentsAdapter;
     private List<AssignmentsModel> assignments;
     private AssignmentsDataHelper db;
+    private Boolean timeSortDel;
+    private Boolean courseSortDel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -70,12 +72,12 @@ public class AssignmentsFragment extends Fragment implements DialogCloseListener
 
         sortFab = binding.assignmentsSort;
         sortFab.setOnClickListener(v -> {
-            assignmentsAdapter.sortByCourse();
+            assignmentsAdapter.sortAssignments(true);
         });
 
         timeSortFab = binding.assignmentsSortTime;
         timeSortFab.setOnClickListener(v -> {
-            assignmentsAdapter.setAssignments(assignments);
+            assignmentsAdapter.sortAssignments(false);
         });
 
         return root;
@@ -91,6 +93,6 @@ public class AssignmentsFragment extends Fragment implements DialogCloseListener
     public void handleDialogClose(DialogInterface dialog) {
         assignments = db.getAllAssignments();
         assignmentsAdapter.setAssignments(assignments);
-        assignmentsAdapter.notifyItemRangeChanged(0, assignments.size());
+        assignmentsAdapter.notifyDataSetChanged();
     }
 }
