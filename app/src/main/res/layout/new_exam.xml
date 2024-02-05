@@ -13,7 +13,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:textSize="18sp"
-        android:hint="Exam Name"
+        android:hint="Name"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
     <EditText
         android:id="@+id/newExamLocation"
@@ -25,7 +25,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:textSize="18sp"
-        android:hint="Exam Location"
+        android:hint="Location"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 <!--    <Button-->
 <!--        android:id="@+id/examTimePicker"-->
@@ -64,7 +64,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:textSize="18sp"
-        android:hint="Exam Time [Enter in MM/DD/YYYY/HOUR/MINUTE format]"
+        android:hint="MM/DD/YYYY/HOUR/MINUTE"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
     <EditText
@@ -77,7 +77,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:textSize="18sp"
-        android:hint="Exam Details"
+        android:hint="Details"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
     <Button
@@ -86,7 +86,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/newExamDetail"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="30dp"
         android:backgroundTint="@android:color/transparent"
         android:text="@string/save"
         android:textAllCaps="false"

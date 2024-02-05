@@ -87,27 +87,27 @@ public class AddNewExam extends BottomSheetDialogFragment {
         db = new ExamDatabaseHandler(getActivity());
         db.openDatabase();
 
-//        newExamName.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                if(s.toString().equals("")){
-//                    newExamSaveButton.setEnabled(false);
-//                    newExamSaveButton.setTextColor(Color.GRAY);
-//                }
-//                else{
-//                    newExamSaveButton.setEnabled(true);
-//                    newExamSaveButton.setTextColor(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.black));
-//                }
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//            }
-//        });
+        newExamName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.toString().equals("")){
+                    newExamSaveButton.setEnabled(false);
+                    newExamSaveButton.setTextColor(Color.GRAY);
+                }
+                else{
+                    newExamSaveButton.setEnabled(true);
+                    newExamSaveButton.setTextColor(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.black));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
 
         final boolean finalIsUpdate = isUpdate;
         newExamSaveButton.setOnClickListener(new View.OnClickListener() {
