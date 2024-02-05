@@ -1,93 +1,146 @@
 package com.example.cs2340gr76.ui.assignments;
 
-import android.app.AlertDialog;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cs2340gr76.R;
 import com.example.cs2340gr76.ui.assignments.Adapter.AssignmentsAdapter;
+import com.example.cs2340gr76.ui.assignments.Model.AssignmentsModel;
+import com.example.cs2340gr76.ui.assignments.Utils.AssignmentsDataHelper;
+import com.example.cs2340gr76.ui.todo.DialogCloseListener;
+import com.example.cs2340gr76.ui.todo.Model.ToDoModel;
+import com.example.cs2340gr76.ui.todo.Utils.DatabaseHandler;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.textfield.TextInputEditText;
 
-public class RecyclerItemAssignments extends ItemTouchHelper.SimpleCallback {
-    private AssignmentsAdapter adapter;
+public class AddNewAssignment extends BottomSheetDialogFragment {
+    public static final String TAG = "ActionBottomDialog";
+    private TextInputEditText newAssignmentText;
+    private TextInputEditText newAssignmentCourse;
+    private TextInputEditText newAssignmentDate;
+    private TextInputEditText newAssignmentTime;
+    private Button newAssignmentSave;
+    private AssignmentsDataHelper db;
 
-    public RecyclerItemAssignments(AssignmentsAdapter adapter) {
-        super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
-        this.adapter = adapter;
+
+    public static AddNewAssignment newInstance() { return new AddNewAssignment(); }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(STYLE_NORMAL, R.style.DialogStyle);
+    }
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.new_assignment, container, false);
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        return view;
+    }
+
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        newAssignmentText = getView().findViewById(R.id.assTitle);
+        newAssignmentCourse = getView().findViewById(R.id.assCourse);
+        newAssignmentDate = getView().findViewById(R.id.assDate);
+        newAssignmentTime = getView().findViewById(R.id.assTime);
+        newAssignmentSave = getView().findViewById(R.id.newAssignmentBtn);
+
+        boolean isUpdate = false;
+        final Bundle bundle = getArguments();
+        if (bundle != null) {
+            isUpdate = true;
+            String assignmentText = bundle.getString("title");
+            newAssignmentText.setText(assignmentText);
+
+            String assignmentCourse = bundle.getString("classname");
+            newAssignmentCourse.setText(assignmentCourse);
+
+            String assignmentDate = bundle.getString("date");
+            newAssignmentDate.setText(assignmentDate);
+
+            String assignmentTime = bundle.getString("time");
+            newAssignmentTime.setText(assignmentTime);
+
+            assert assignmentText != null;
+            assert assignmentCourse != null;
+            assert assignmentDate != null;
+            assert assignmentTime != null;
+            if (assignmentText.length() > 0) {
+                newAssignmentSave.setTextColor(ContextCompat.getColor(getContext(), R.color.teal_200));
+            }
+        }
+
+        db = new AssignmentsDataHelper(getActivity());
+        db.openDatabase();
+
+        newAssignmentText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().equals("")) {
+                    newAssignmentSave.setEnabled(false);
+                    newAssignmentSave.setTextColor(0xd3d3d3);
+                } else {
+                    newAssignmentSave.setEnabled(true);
+                    newAssignmentSave.setTextColor(ContextCompat.getColor(getContext(), R.color.teal_200));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        final boolean finalIsUpdate = isUpdate;
+        newAssignmentSave.setOnClickListener(v -> {
+            String text = newAssignmentText.getText().toString();
+
+            String course = newAssignmentCourse.getText().toString();
+            String date = newAssignmentDate.getText().toString();
+            String time = newAssignmentTime.getText().toString();
+
+            AssignmentsModel updatedAssignment = new AssignmentsModel(
+                    text, date, time, course, null
+            );
+            if (finalIsUpdate) {
+                updatedAssignment.setId(bundle.getInt("id"));
+
+                db.updateAssignment(updatedAssignment);
+            } else {
+
+                AssignmentsModel assignment = new AssignmentsModel(null, null, null, null, null);
+                assignment.setTitle(text);
+                assignment.setClassName(course);
+                assignment.setDate(date);
+                assignment.setTime(time);
+                db.insertAssignment(assignment);
+            }
+
+
+            db.closeDatabase();
+            dismiss();
+        });
     }
 
     @Override
-    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-        return false;
-    }
-
-    @Override
-    public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
-        final int position = viewHolder.getBindingAdapterPosition();
-        if (direction == ItemTouchHelper.LEFT) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(adapter.getContext());
-            builder.setTitle("Delete Assignment");
-            builder.setMessage("Are you sure you want to delete this assignment?");
-            builder.setPositiveButton("Confirm", (dialog, which) -> {
-                adapter.deleteItem(position);
-                adapter.notifyDataSetChanged();
-            });
-            builder.setNegativeButton("Cancel", (dialog, which) -> adapter.notifyItemChanged(viewHolder.getBindingAdapterPosition()));
-            AlertDialog dialog = builder.create();
-            dialog.show();
-
-        } else {
-            adapter.editItem(position);
-            adapter.notifyDataSetChanged();
+    public void onDismiss(DialogInterface dialog) {
+        Activity fragment = getActivity();
+        if (fragment instanceof com.example.cs2340gr76.ui.todo.DialogCloseListener) {
+            ((DialogCloseListener) fragment).handleDialogClose(dialog);
         }
-    }
-
-    @Override
-    public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-
-        Drawable icon;
-        ColorDrawable background;
-
-        View itemView = viewHolder.itemView;
-        int backgroundCornerOffSet = 20;
-
-        if (dX > 0) {
-            icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.edit);
-            background = new ColorDrawable(ContextCompat.getColor(adapter.getContext(), R.color.teal_700));
-        } else {
-            icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.delete);
-            background = new ColorDrawable(Color.RED);
-        }
-
-        assert icon != null;
-        int iconMargin = (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
-        int iconTop = itemView.getTop() + (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
-        int iconBottom = iconTop + icon.getIntrinsicHeight();
-
-        if (dX > 0) {
-            int iconLeft = itemView.getLeft() + iconMargin;
-            int iconRight = itemView.getLeft() + iconMargin + icon.getIntrinsicWidth();
-            icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
-
-            background.setBounds(itemView.getLeft(), itemView.getTop(), itemView.getLeft() + ((int) dX) + backgroundCornerOffSet, itemView.getBottom());
-        } else if (dX < 0) {
-            int iconLeft = itemView.getRight() - iconMargin - icon.getIntrinsicWidth();
-            int iconRight = itemView.getRight() - iconMargin;
-            icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
-
-            background.setBounds(itemView.getRight() + ((int) dX) - backgroundCornerOffSet, itemView.getTop(),
-                    itemView.getRight(), itemView.getBottom());
-        } else {
-            background.setBounds(0,0,0,0);
-        }
-        background.draw(c);
-        icon.draw(c);
     }
 }
