@@ -39,7 +39,6 @@ public class ExamsFragment extends Fragment implements DialogCloseListener {
         View root = binding.getRoot();
 
         final TextView textView = binding.textExams;
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
         db = new ExamDatabaseHandler(this.getActivity());
         db.openDatabase();
