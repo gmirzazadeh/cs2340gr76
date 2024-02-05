@@ -89,21 +89,22 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
     }
 
     public void setAssignments(List<AssignmentsModel> newAssignments) {
-        newAssignments.sort(Comparator.comparing(AssignmentsModel::getDate).thenComparing(AssignmentsModel::getTime));
         assignments.clear();
         assignments.addAll(newAssignments);
         notifyDataSetChanged();
     }
 
-    public void sortByCourse() {
-        List<AssignmentsModel> sortedAssignments = new ArrayList<>(assignments);
-        sortedAssignments.sort(Comparator.comparing(AssignmentsModel::getClassName));
-        // sort by date and time within each course
-        sortedAssignments.sort(Comparator.comparing(AssignmentsModel::getClassName)
-                .thenComparing(AssignmentsModel::getDate)
-                .thenComparing(AssignmentsModel::getTime));
-        assignments.clear();
-        assignments.addAll(sortedAssignments);
+    public void sortAssignments(boolean sortCourse) {
+        if (sortCourse) {
+            assignments.sort(Comparator.comparing(AssignmentsModel::getClassName)
+                    .thenComparing(AssignmentsModel::getDate)
+                    .thenComparing(AssignmentsModel::getTime));
+        } else {
+            assignments.sort(Comparator.comparing(AssignmentsModel::getDate)
+                    .thenComparing(AssignmentsModel::getTime)
+                    .thenComparing(AssignmentsModel::getClassName));
+        }
+        notifyDataSetChanged();
         notifyDataSetChanged();
     }
 
@@ -145,5 +146,4 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
             timeTextView = itemView.findViewById(R.id.timeTextView);
         }
     }
-
 }
