@@ -58,7 +58,7 @@
 
     <fragment
         android:id="@+id/navigation_exams"
-        android:name="com.example.cs2340gr76.ui.notifications.NotificationsFragment"
+        android:name="com.example.cs2340gr76.ui.exams.ExamsFragment"
         android:label="@string/exams"
         tools:layout="@layout/fragment_exams" >
         <action
