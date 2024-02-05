@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ExamDatabaseHandler extends SQLiteOpenHelper {
 
-    private static final int VERSION = 1;
+    private static final int VERSION = 2;
     private static final String BASENAME = "examListDatabase";
     private static final String EXAM_TABLE = "exam";
     private static final String ID = "id";
@@ -110,6 +110,11 @@ public class ExamDatabaseHandler extends SQLiteOpenHelper {
         db.update(EXAM_TABLE, cv, ID + "= ?", new String[] {String.valueOf(id)});
     }
 
+    public void closeDatabase() {
+        if (db != null && db.isOpen()) {
+            db.close();
+        }
+    }
 
     public void deleteExam(int id){
         db.delete(EXAM_TABLE, ID + "= ?", new String[] {String.valueOf(id)});

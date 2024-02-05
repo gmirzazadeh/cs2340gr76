@@ -110,24 +110,28 @@ public class AddNewExam extends BottomSheetDialogFragment {
         });
 
         final boolean finalIsUpdate = isUpdate;
-        newExamSaveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name = newExamName.getText().toString();
-                String location = newExamName.getText().toString();
-                String detail = newExamName.getText().toString();
-                if(finalIsUpdate){
-                    db.updateName(bundle.getInt("id"), name);
-                }
-                else {
-                    ExamModel exam = new ExamModel();
-                    exam.setName(name);
-                    exam.setLocation(location);
-                    exam.setDetail(detail);
-                    db.insertTask(exam);
-                }
-                dismiss();
+        newExamSaveButton.setOnClickListener(v -> {
+            String name = newExamName.getText().toString();
+            String location = newExamLocation.getText().toString();
+            String time = newExamTime.getText().toString();
+            String detail = newExamDetail.getText().toString();
+            if(finalIsUpdate){
+                db.updateName(bundle.getInt("id"), name);
+                db.updateLocation(bundle.getInt("id"), location);
+                db.updateTime(bundle.getInt("id"), time);
+                db.updateDetail(bundle.getInt("id"), detail);
             }
+            else {
+                ExamModel exam = new ExamModel();
+                exam.setName(name);
+                exam.setLocation(location);
+                exam.setTime(time);
+                exam.setDetail(detail);
+                db.insertTask(exam);
+            }
+            db.closeDatabase();
+
+            dismiss();
         });
     }
 
