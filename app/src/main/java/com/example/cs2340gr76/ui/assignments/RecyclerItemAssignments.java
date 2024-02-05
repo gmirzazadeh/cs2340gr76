@@ -38,9 +38,11 @@ public class RecyclerItemAssignments extends ItemTouchHelper.SimpleCallback {
             builder.setNegativeButton("Cancel", (dialog, which) -> adapter.notifyItemChanged(viewHolder.getBindingAdapterPosition()));
             AlertDialog dialog = builder.create();
             dialog.show();
+            adapter.notifyDataSetChanged();
 
         } else {
             adapter.editItem(position);
+            adapter.notifyDataSetChanged();
         }
     }
 
