@@ -26,7 +26,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
 
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_exams, parent, false);
+                .inflate(R.layout.exam_card, parent, false);
         return new ViewHolder(itemView);
     }
 

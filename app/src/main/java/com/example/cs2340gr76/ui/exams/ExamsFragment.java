@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.cs2340gr76.databinding.FragmentExamsBinding;
+import com.example.cs2340gr76.ui.assignments.AddNewAssignment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,9 +40,9 @@ public class ExamsFragment extends Fragment implements DialogCloseListener {
         binding = FragmentExamsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textExams;
+//        final TextView textView = binding.textExams;
 
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+//        dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
         db = new ExamDatabaseHandler(this.getActivity());
         db.openDatabase();
@@ -53,6 +54,10 @@ public class ExamsFragment extends Fragment implements DialogCloseListener {
         binding.examsRecyclerView.setAdapter(examsAdaptor);
 
 
+
+        examsAdaptor.notifyItemChanged(0, examsList.size());
+
+        binding.examsFab.setOnClickListener(v -> AddNewExam.newInstance().show(getParentFragmentManager(), AddNewExam.TAG));
 
         examsList = db.getAllExams();
         Collections.reverse(examsList);
