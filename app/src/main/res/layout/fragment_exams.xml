@@ -19,6 +19,7 @@
         android:layout_marginEnd="8dp"
         android:textSize="30sp"
         android:textStyle="bold"
+        android:textAlignment="center"
         android:text="@string/exams" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -38,7 +39,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_gravity="bottom|end"
-        android:layout_margin="20dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginBottom="100dp"
         android:backgroundTint="@color/purple_200"
         android:src="@drawable/add"
         android:layout_alignParentBottom="true"/>
