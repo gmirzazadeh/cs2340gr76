@@ -35,10 +35,9 @@ public class AssignmentsFragment extends Fragment implements DialogCloseListener
     private RecyclerView assignmentsRecyclerView;
     private FloatingActionButton addFab;
     private FloatingActionButton sortFab;
+    private FloatingActionButton timeSortFab;
     private AssignmentsAdapter assignmentsAdapter;
     private List<AssignmentsModel> assignments;
-
-    private boolean isSortedByCourse = false;
     private AssignmentsDataHelper db;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -71,13 +70,12 @@ public class AssignmentsFragment extends Fragment implements DialogCloseListener
 
         sortFab = binding.assignmentsSort;
         sortFab.setOnClickListener(v -> {
-            if (isSortedByCourse) {
-                assignmentsAdapter.setAssignments(assignments);
-            } else {
-                assignmentsAdapter.sortByCourse();
-            }
+            assignmentsAdapter.sortByCourse();
+        });
 
-            isSortedByCourse = !isSortedByCourse;
+        timeSortFab = binding.assignmentsSortTime;
+        timeSortFab.setOnClickListener(v -> {
+            assignmentsAdapter.setAssignments(assignments);
         });
 
         return root;
