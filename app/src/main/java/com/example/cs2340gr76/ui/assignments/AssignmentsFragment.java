@@ -1,146 +1,152 @@
-package com.example.cs2340gr76.ui.assignments;
+package com.example.cs2340gr76.ui.assignments.Adapter;
 
-import android.app.Activity;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.Button;
 
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
+import android.widget.TextView;
+
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cs2340gr76.R;
-import com.example.cs2340gr76.ui.assignments.Adapter.AssignmentsAdapter;
+import com.example.cs2340gr76.ui.assignments.AddNewAssignment;
+import com.example.cs2340gr76.ui.assignments.AssignmentsFragment;
 import com.example.cs2340gr76.ui.assignments.Model.AssignmentsModel;
 import com.example.cs2340gr76.ui.assignments.Utils.AssignmentsDataHelper;
-import com.example.cs2340gr76.ui.todo.DialogCloseListener;
-import com.example.cs2340gr76.ui.todo.Model.ToDoModel;
-import com.example.cs2340gr76.ui.todo.Utils.DatabaseHandler;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.textfield.TextInputEditText;
 
-public class AddNewAssignment extends BottomSheetDialogFragment {
-    public static final String TAG = "ActionBottomDialog";
-    private TextInputEditText newAssignmentText;
-    private TextInputEditText newAssignmentCourse;
-    private TextInputEditText newAssignmentDate;
-    private TextInputEditText newAssignmentTime;
-    private Button newAssignmentSave;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.ViewHolder> {
+
+    private List<AssignmentsModel> assignments;
+
+    private AssignmentsFragment fragment;
     private AssignmentsDataHelper db;
 
+    private Boolean sorting;
 
-    public static AddNewAssignment newInstance() { return new AddNewAssignment(); }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setStyle(STYLE_NORMAL, R.style.DialogStyle);
-    }
-
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.new_assignment, container, false);
-        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        return view;
-    }
-
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        newAssignmentText = getView().findViewById(R.id.assTitle);
-        newAssignmentCourse = getView().findViewById(R.id.assCourse);
-        newAssignmentDate = getView().findViewById(R.id.assDate);
-        newAssignmentTime = getView().findViewById(R.id.assTime);
-        newAssignmentSave = getView().findViewById(R.id.newAssignmentBtn);
-
-        boolean isUpdate = false;
-        final Bundle bundle = getArguments();
-        if (bundle != null) {
-            isUpdate = true;
-            String assignmentText = bundle.getString("title");
-            newAssignmentText.setText(assignmentText);
-
-            String assignmentCourse = bundle.getString("classname");
-            newAssignmentCourse.setText(assignmentCourse);
-
-            String assignmentDate = bundle.getString("date");
-            newAssignmentDate.setText(assignmentDate);
-
-            String assignmentTime = bundle.getString("time");
-            newAssignmentTime.setText(assignmentTime);
-
-            assert assignmentText != null;
-            assert assignmentCourse != null;
-            assert assignmentDate != null;
-            assert assignmentTime != null;
-            if (assignmentText.length() > 0) {
-                newAssignmentSave.setTextColor(ContextCompat.getColor(getContext(), R.color.teal_200));
-            }
-        }
-
-        db = new AssignmentsDataHelper(getActivity());
-        db.openDatabase();
-
-        newAssignmentText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().equals("")) {
-                    newAssignmentSave.setEnabled(false);
-                    newAssignmentSave.setTextColor(0xd3d3d3);
-                } else {
-                    newAssignmentSave.setEnabled(true);
-                    newAssignmentSave.setTextColor(ContextCompat.getColor(getContext(), R.color.teal_200));
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
-        final boolean finalIsUpdate = isUpdate;
-        newAssignmentSave.setOnClickListener(v -> {
-            String text = newAssignmentText.getText().toString();
-
-            String course = newAssignmentCourse.getText().toString();
-            String date = newAssignmentDate.getText().toString();
-            String time = newAssignmentTime.getText().toString();
-
-            AssignmentsModel updatedAssignment = new AssignmentsModel(
-                    text, date, time, course, null
-            );
-            if (finalIsUpdate) {
-                updatedAssignment.setId(bundle.getInt("id"));
-
-                db.updateAssignment(updatedAssignment);
-            } else {
-
-                AssignmentsModel assignment = new AssignmentsModel(null, null, null, null, null);
-                assignment.setTitle(text);
-                assignment.setClassName(course);
-                assignment.setDate(date);
-                assignment.setTime(time);
-                db.insertAssignment(assignment);
-            }
-
-
-            db.closeDatabase();
-            dismiss();
-        });
+    public AssignmentsAdapter(AssignmentsDataHelper db, AssignmentsFragment fragment) {
+        this.db = db;
+        this.fragment = fragment;
+        this.assignments = db.getAllAssignments();
+        assignments.sort(Comparator.comparing(AssignmentsModel::getDate).thenComparing(AssignmentsModel::getTime));
     }
 
     @Override
-    public void onDismiss(DialogInterface dialog) {
-        Activity fragment = getActivity();
-        if (fragment instanceof com.example.cs2340gr76.ui.todo.DialogCloseListener) {
-            ((DialogCloseListener) fragment).handleDialogClose(dialog);
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int view) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.assignment_layout, parent, false);
+        db.getAllAssignments();
+        return new ViewHolder(itemView);
+    }
+
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        AssignmentsModel assignment = assignments.get(position);
+        if (holder.titleTextView != null) {
+            holder.titleTextView.setText(assignment.getTitle());
+        }
+        if (holder.classNameTextView != null) {
+            holder.classNameTextView.setText(assignment.getClassName());
+        }
+        if (holder.dateTextView != null) {
+            holder.dateTextView.setText(formatDate(assignment.getDate()));
+        }
+        if (holder.timeTextView != null) {
+            holder.timeTextView.setText(assignment.getTime());
         }
     }
+
+
+    private String formatDate(String dateStr) {
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+            Date date = inputFormat.parse(dateStr);
+            SimpleDateFormat outputFormat = new SimpleDateFormat("MM-dd-yyyy", Locale.US);
+            return outputFormat.format(date);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
+    public int getItemCount() {
+        return assignments.size();
+    }
+
+    public Context getContext() {
+        return this.fragment.getContext();
+    }
+
+    public void setAssignments(List<AssignmentsModel> newAssignments) {
+        // newAssignments.sort(Comparator.comparing(AssignmentsModel::getDate).thenComparing(AssignmentsModel::getTime));
+        assignments.clear();
+        assignments.addAll(newAssignments);
+        notifyDataSetChanged();
+    }
+
+    public void sortAssignments(boolean sorting) {
+        if (sorting) {
+            assignments.sort(Comparator.comparing(AssignmentsModel::getClassName)
+                    .thenComparing(AssignmentsModel::getDate)
+                    .thenComparing(AssignmentsModel::getTime));
+        } else {
+            assignments.sort(Comparator.comparing(AssignmentsModel::getDate)
+                    .thenComparing(AssignmentsModel::getTime)
+                    .thenComparing(AssignmentsModel::getClassName));
+        }
+        notifyDataSetChanged();
+    }
+
+
+    public void deleteItem(int position) {
+        AssignmentsModel item = assignments.get(position);
+        db.deleteAssignment(item);
+        assignments.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public void editItem(int position) {
+        AssignmentsModel item = assignments.get(position);
+        Bundle bundle = new Bundle();
+        bundle.putInt("id", item.getId());
+        bundle.putString("title", item.getTitle());
+        bundle.putString("classname", item.getClassName());
+        bundle.putString("date", item.getDate());
+        bundle.putString("time", item.getTime());
+        AddNewAssignment fragment = new AddNewAssignment();
+        fragment.setArguments(bundle);
+        fragment.show(this.fragment.getParentFragmentManager(), AddNewAssignment.TAG);
+        notifyItemChanged(position);
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
+        TextView titleTextView;
+        TextView classNameTextView;
+        TextView dateTextView;
+        TextView timeTextView;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+
+            titleTextView = itemView.findViewById(R.id.assignmentTextView);
+            classNameTextView = itemView.findViewById(R.id.courseTextView);
+            dateTextView = itemView.findViewById(R.id.dateTextView);
+            timeTextView = itemView.findViewById(R.id.timeTextView);
+        }
+    }
+
 }
