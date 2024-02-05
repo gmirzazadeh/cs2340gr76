@@ -1,98 +1,93 @@
 package com.example.cs2340gr76.ui.assignments;
 
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.app.AlertDialog;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
-import com.example.cs2340gr76.databinding.FragmentAssignmentsBinding;
+import com.example.cs2340gr76.R;
 import com.example.cs2340gr76.ui.assignments.Adapter.AssignmentsAdapter;
-import com.example.cs2340gr76.ui.assignments.Model.AssignmentsModel;
-import com.example.cs2340gr76.ui.assignments.Utils.AssignmentsDataHelper;
 
-import com.example.cs2340gr76.ui.todo.DialogCloseListener;
+public class RecyclerItemAssignments extends ItemTouchHelper.SimpleCallback {
+    private AssignmentsAdapter adapter;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-
-
-import java.util.List;
-
-
-public class AssignmentsFragment extends Fragment implements DialogCloseListener {
-
-    private FragmentAssignmentsBinding binding;
-    private RecyclerView assignmentsRecyclerView;
-    private FloatingActionButton addFab;
-    private FloatingActionButton sortFab;
-    private FloatingActionButton timeSortFab;
-    private AssignmentsAdapter assignmentsAdapter;
-    private List<AssignmentsModel> assignments;
-    private AssignmentsDataHelper db;
-    private Boolean timeSortDel;
-    private Boolean courseSortDel;
-
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        AssignmentsViewModel assignmentsViewModel =
-                new ViewModelProvider(this).get(AssignmentsViewModel.class);
-
-        binding = FragmentAssignmentsBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-
-        final TextView textView = binding.textAssignments;
-
-        db = new AssignmentsDataHelper(this.getContext());
-        db.openDatabase();
-
-        assignmentsRecyclerView = binding.assignmentsRecylerView;
-        assignmentsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        assignmentsAdapter = new AssignmentsAdapter(db, this);
-        assignmentsRecyclerView.setAdapter(assignmentsAdapter);
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new RecyclerItemAssignments(assignmentsAdapter));
-        itemTouchHelper.attachToRecyclerView(assignmentsRecyclerView);
-
-        addFab = binding.assignmentsAdd;
-        assignments = db.getAllAssignments();
-        assignmentsAdapter.setAssignments(assignments);
-        assignmentsAdapter.notifyItemChanged(0, assignments.size());
-
-        addFab.setOnClickListener(v -> AddNewAssignment.newInstance().show(getParentFragmentManager(), AddNewAssignment.TAG));
-
-        sortFab = binding.assignmentsSort;
-        sortFab.setOnClickListener(v -> {
-            assignmentsAdapter.sortAssignments(true);
-        });
-
-        timeSortFab = binding.assignmentsSortTime;
-        timeSortFab.setOnClickListener(v -> {
-            assignmentsAdapter.sortAssignments(false);
-        });
-
-        return root;
+    public RecyclerItemAssignments(AssignmentsAdapter adapter) {
+        super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+        this.adapter = adapter;
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+        return false;
     }
 
     @Override
-    public void handleDialogClose(DialogInterface dialog) {
-        assignments = db.getAllAssignments();
-        assignmentsAdapter.setAssignments(assignments);
-        assignmentsAdapter.notifyDataSetChanged();
+    public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
+        final int position = viewHolder.getBindingAdapterPosition();
+        if (direction == ItemTouchHelper.LEFT) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(adapter.getContext());
+            builder.setTitle("Delete Assignment");
+            builder.setMessage("Are you sure you want to delete this assignment?");
+            builder.setPositiveButton("Confirm", (dialog, which) -> {
+                adapter.deleteItem(position);
+                adapter.notifyDataSetChanged();
+            });
+            builder.setNegativeButton("Cancel", (dialog, which) -> adapter.notifyItemChanged(viewHolder.getBindingAdapterPosition()));
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+        } else {
+            adapter.editItem(position);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+
+        Drawable icon;
+        ColorDrawable background;
+
+        View itemView = viewHolder.itemView;
+        int backgroundCornerOffSet = 20;
+
+        if (dX > 0) {
+            icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.edit);
+            background = new ColorDrawable(ContextCompat.getColor(adapter.getContext(), R.color.teal_700));
+        } else {
+            icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.delete);
+            background = new ColorDrawable(Color.RED);
+        }
+
+        assert icon != null;
+        int iconMargin = (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
+        int iconTop = itemView.getTop() + (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
+        int iconBottom = iconTop + icon.getIntrinsicHeight();
+
+        if (dX > 0) {
+            int iconLeft = itemView.getLeft() + iconMargin;
+            int iconRight = itemView.getLeft() + iconMargin + icon.getIntrinsicWidth();
+            icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
+
+            background.setBounds(itemView.getLeft(), itemView.getTop(), itemView.getLeft() + ((int) dX) + backgroundCornerOffSet, itemView.getBottom());
+        } else if (dX < 0) {
+            int iconLeft = itemView.getRight() - iconMargin - icon.getIntrinsicWidth();
+            int iconRight = itemView.getRight() - iconMargin;
+            icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
+
+            background.setBounds(itemView.getRight() + ((int) dX) - backgroundCornerOffSet, itemView.getTop(),
+                    itemView.getRight(), itemView.getBottom());
+        } else {
+            background.setBounds(0,0,0,0);
+        }
+        background.draw(c);
+        icon.draw(c);
     }
 }
