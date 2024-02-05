@@ -55,10 +55,10 @@ public class AddNewExam extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        newExamName = Objects.requireNonNull(getView()).findViewById(R.id.newExamName);
-        newExamLocation = Objects.requireNonNull(getView()).findViewById(R.id.newExamLocation);
-        newExamTime = Objects.requireNonNull(getView()).findViewById(R.id.newExamTime);
-        newExamDetail = Objects.requireNonNull(getView()).findViewById(R.id.newExamDetail);
+        newExamName = getView().findViewById(R.id.newExamName);
+        newExamLocation = getView().findViewById(R.id.newExamLocation);
+        newExamTime = getView().findViewById(R.id.newExamTime);
+        newExamDetail = getView().findViewById(R.id.newExamDetail);
         newExamSaveButton = getView().findViewById(R.id.saveExamButton);
 
         boolean isUpdate = false;
@@ -69,11 +69,11 @@ public class AddNewExam extends BottomSheetDialogFragment {
             String name = bundle.getString("name");
             newExamName.setText(name);
             String location = bundle.getString("location");
-            newExamName.setText(name);
+            newExamLocation.setText(name);
             String time = bundle.getString("time");
-            newExamName.setText(name);
+            newExamTime.setText(name);
             String detail = bundle.getString("detail");
-            newExamName.setText(name);
+            newExamDetail.setText(name);
 
             assert name != null;
             assert location != null;
@@ -81,7 +81,7 @@ public class AddNewExam extends BottomSheetDialogFragment {
             assert detail != null;
 
             if(name.length()>0)
-                newExamSaveButton.setTextColor(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.black));
+                newExamSaveButton.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
         }
 
         db = new ExamDatabaseHandler(getActivity());
@@ -100,7 +100,7 @@ public class AddNewExam extends BottomSheetDialogFragment {
                 }
                 else{
                     newExamSaveButton.setEnabled(true);
-                    newExamSaveButton.setTextColor(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.black));
+                    newExamSaveButton.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
                 }
             }
 
