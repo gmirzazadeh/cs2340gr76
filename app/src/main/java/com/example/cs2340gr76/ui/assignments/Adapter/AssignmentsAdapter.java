@@ -112,7 +112,6 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
         AssignmentsModel item = assignments.get(position);
         db.deleteAssignment(item);
         assignments.remove(position);
-        setAssignments(assignments);
         notifyItemRemoved(position);
     }
 
