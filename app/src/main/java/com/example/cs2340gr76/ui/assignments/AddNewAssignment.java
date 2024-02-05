@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -26,10 +27,10 @@ import com.google.android.material.textfield.TextInputEditText;
 
 public class AddNewAssignment extends BottomSheetDialogFragment {
     public static final String TAG = "ActionBottomDialog";
-    private TextInputEditText newAssignmentText;
-    private TextInputEditText newAssignmentCourse;
-    private TextInputEditText newAssignmentDate;
-    private TextInputEditText newAssignmentTime;
+    private EditText newAssignmentText;
+    private EditText newAssignmentCourse;
+    private EditText newAssignmentDate;
+    private EditText newAssignmentTime;
     private Button newAssignmentSave;
     private AssignmentsDataHelper db;
 
@@ -50,10 +51,10 @@ public class AddNewAssignment extends BottomSheetDialogFragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        newAssignmentText = getView().findViewById(R.id.assTitle);
-        newAssignmentCourse = getView().findViewById(R.id.assCourse);
-        newAssignmentDate = getView().findViewById(R.id.assDate);
-        newAssignmentTime = getView().findViewById(R.id.assTime);
+        newAssignmentText = getView().findViewById(R.id.newAssignmentTxt);
+        newAssignmentCourse = getView().findViewById(R.id.newAssignmentCourse);
+        newAssignmentDate = getView().findViewById(R.id.newAssignmentDate);
+        newAssignmentTime = getView().findViewById(R.id.newAssignmentTime);
         newAssignmentSave = getView().findViewById(R.id.newAssignmentBtn);
 
         boolean isUpdate = false;
@@ -96,7 +97,7 @@ public class AddNewAssignment extends BottomSheetDialogFragment {
                     newAssignmentSave.setTextColor(0xd3d3d3);
                 } else {
                     newAssignmentSave.setEnabled(true);
-                    newAssignmentSave.setTextColor(ContextCompat.getColor(getContext(), R.color.teal_200));
+                    newAssignmentSave.setTextColor(ContextCompat.getColor(getContext(), R.color.teal_700));
                 }
             }
 

@@ -105,7 +105,6 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
                     .thenComparing(AssignmentsModel::getClassName));
         }
         notifyDataSetChanged();
-        notifyDataSetChanged();
     }
 
     public void deleteItem(int position) {

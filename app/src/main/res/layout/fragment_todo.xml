@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tasksTest"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="65dp"
+        android:layout_marginBottom="60dp"
         android:nestedScrollingEnabled="true"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
