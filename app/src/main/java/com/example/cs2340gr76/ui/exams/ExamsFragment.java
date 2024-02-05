@@ -32,6 +32,7 @@ public class ExamsFragment extends Fragment implements DialogCloseListener {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
         ExamsViewModel dashboardViewModel =
                 new ViewModelProvider(this).get(ExamsViewModel.class);
 
@@ -39,6 +40,7 @@ public class ExamsFragment extends Fragment implements DialogCloseListener {
         View root = binding.getRoot();
 
         final TextView textView = binding.textExams;
+
         dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
         db = new ExamDatabaseHandler(this.getActivity());
