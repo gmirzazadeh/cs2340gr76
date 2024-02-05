@@ -64,7 +64,7 @@ public class AssignmentsModel {
     }
 
     public String getClassName() {
-        return className;
+        return className.toUpperCase();
     }
 
     public void setClassName(String className) {
