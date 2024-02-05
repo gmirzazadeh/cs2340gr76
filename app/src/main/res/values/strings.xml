@@ -7,4 +7,7 @@
     <string name="assignments">Assignments</string>
     <string name="exams">Exams</string>
     <string name="to_do_list">To-Do List</string>
+    <string name="save">Save</string>
+    <string name="pick_time">Time</string>
+    <string name="pick_date">Date</string>
 </resources>
