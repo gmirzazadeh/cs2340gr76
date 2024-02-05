@@ -9,7 +9,10 @@
         android:layout_height="wrap_content"
         android:background="@null"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:hint="New Task..." />
+        android:hint="New Task..."
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginLeft="30dp"/>
 
     <Button
         android:id="@+id/newTaskButton"
@@ -21,7 +24,9 @@
         android:text="Save"
         android:textAllCaps="false"
         android:backgroundTint="@android:color/transparent"
-        android:textColor="@android:color/darker_gray" />
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginBottom="50dp"
+        android:layout_marginRight="30dp"/>
 
 
 </RelativeLayout>
