@@ -32,7 +32,7 @@ public class ExamsModel {
     }
 
     public String getLocation() {
-        return location;
+        return location.toUpperCase();
     }
 
     public void setLocation(String location) {

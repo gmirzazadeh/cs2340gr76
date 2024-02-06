@@ -113,7 +113,7 @@ public class AddNewExam extends BottomSheetDialogFragment {
             String time = newExamTime.getText().toString();
             String date = newExamDate.getText().toString();
 
-            ExamsModel updatedExam = new ExamsModel(name, location, time, date);
+            ExamsModel updatedExam = new ExamsModel(name, location, date, time);
 
             if(finalIsUpdate){
                 updatedExam.setId(bundle.getInt("id"));
@@ -125,7 +125,7 @@ public class AddNewExam extends BottomSheetDialogFragment {
 //                db.updateDate(bundle.getInt("id"), date);
             }
             else {
-                ExamsModel exam = new ExamsModel(name, location, time, date);
+                ExamsModel exam = new ExamsModel(name, location, date, time);
 //                exam.setName(name);
 //                exam.setLocation(location);
 //                exam.setTime(time);
