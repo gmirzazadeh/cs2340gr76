@@ -78,7 +78,7 @@ public class AddNewAssignment extends BottomSheetDialogFragment {
             assert assignmentDate != null;
             assert assignmentTime != null;
             if (assignmentText.length() > 0) {
-                newAssignmentSave.setTextColor(ContextCompat.getColor(getContext(), R.color.teal_200));
+                newAssignmentSave.setTextColor(ContextCompat.getColor(getContext(), R.color.teal_700));
             }
         }
 
