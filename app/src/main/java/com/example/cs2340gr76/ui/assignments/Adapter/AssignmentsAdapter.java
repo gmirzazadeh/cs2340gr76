@@ -70,7 +70,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
         try {
             SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
             Date date = inputFormat.parse(dateStr);
-            SimpleDateFormat outputFormat = new SimpleDateFormat("MMMM dd, yyyy", Locale.US);
+            SimpleDateFormat outputFormat = new SimpleDateFormat("E, MMM dd, yyyy", Locale.US);
             return outputFormat.format(date);
 
         } catch (ParseException e) {
@@ -84,7 +84,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
         try {
             SimpleDateFormat inputFormat = new SimpleDateFormat("HH:mm", Locale.US);
             Date date = inputFormat.parse(timeStr);
-            SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm", Locale.US);
+            SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm z", Locale.US);
             return outputFormat.format(date);
 
         } catch (ParseException e) {
