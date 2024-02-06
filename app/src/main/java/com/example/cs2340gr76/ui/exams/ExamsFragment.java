@@ -109,7 +109,7 @@ public class ExamsFragment extends Fragment implements DialogCloseListener {
     private RecyclerView examsRecyclerView;
     private FloatingActionButton addFab;
     private FloatingActionButton sortFab;
-    private FloatingActionButton timeSortFab;
+//    private FloatingActionButton timeSortFab;
     private ExamsAdapter examsAdapter;
     private List<ExamsModel> exams;
     private ExamsDataHelper db;
@@ -147,10 +147,10 @@ public class ExamsFragment extends Fragment implements DialogCloseListener {
             examsAdapter.sortExams(true);
         });
 
-        timeSortFab = binding.examsSortTime;
-        timeSortFab.setOnClickListener(v -> {
-            examsAdapter.sortExams(false);
-        });
+//        timeSortFab = binding.examsSortTime;
+//        timeSortFab.setOnClickListener(v -> {
+//            examsAdapter.sortExams(false);
+//        });
 
         return root;
     }

@@ -133,8 +133,8 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
         bundle.putInt("id", item.getId());
         bundle.putString("name", item.getName());
         bundle.putString("location", item.getLocation());
-        bundle.putString("date", item.getDate());
-        bundle.putString("time", item.getTime());
+        bundle.putString("date", formatDate(item.getDate()));
+        bundle.putString("time", formatTime(item.getTime()));
         AddNewExam fragment = new AddNewExam();
         fragment.setArguments(bundle);
         fragment.show(fragment.getParentFragmentManager(), AddNewExam.TAG);
