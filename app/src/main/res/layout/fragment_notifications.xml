@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,8 +15,70 @@
         android:layout_marginEnd="8dp"
         android:textAlignment="center"
         android:textSize="20sp"
+        android:textColor="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/notificationsTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="Notifications"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:textSize="35sp" />
+
+    <TextView
+        android:id="@+id/customizable_alarm_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Customizable Alarm"
+        android:textSize="18sp"
+        android:layout_below="@id/notificationsTitle"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp" />
+
+
+    <TimePicker
+        android:id="@+id/time_picker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/customizable_alarm_header"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="-22dp"
+        android:layout_marginTop="11dp" />
+
+    <TextView
+        android:id="@+id/model_a_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Model A Info"
+        android:layout_below="@id/time_picker"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/model_b_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Model B Info"
+        android:layout_below="@id/model_a_info"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp" />
+
+    <Switch
+        android:id="@+id/enable_alarm_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enable Early Alarm"
+        android:layout_below="@id/model_b_info"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp" />
+
+</RelativeLayout>
