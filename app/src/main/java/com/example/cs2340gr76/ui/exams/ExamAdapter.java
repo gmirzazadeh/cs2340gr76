@@ -4,12 +4,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cs2340gr76.R;
+import com.example.cs2340gr76.databinding.FragmentExamsBinding;
+import com.example.cs2340gr76.databinding.NewExamBinding;
 
 import java.util.List;
 
@@ -18,6 +21,8 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
     private List<ExamModel> examList;
     private ExamDatabaseHandler db;
     private ExamsFragment fragment;
+
+    private FragmentExamsBinding binding;
 
     public ExamAdapter(ExamDatabaseHandler db, ExamsFragment fragment) {
         this.fragment = fragment;
@@ -33,7 +38,23 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         db.openDatabase();
         final ExamModel item = examList.get(position);
-        holder.exam.setText(item.toString());
+        if (holder.examNameView != null) {
+            holder.examNameView.setText(item.getName());
+        }
+        if (holder.examLocationView != null) {
+            holder.examLocationView.setText(item.getLocation());
+        }
+        if (holder.examDetailView != null) {
+            holder.examDetailView.setText(item.getDetail());
+        }
+        if (holder.examTimeView != null) {
+            holder.examTimeView.setText(item.getTime());
+        }
+//        holder.binding.newExamName.setText(item.getName());
+//        holder.binding.newExamLocation.setText(item.getLocation());
+//        holder.binding.newExamDetail.setText(item.getDetail());
+//        holder.binding.newExamTime.setText(item.getTime());
+
     }
 
     @Override
@@ -141,11 +162,21 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
 //    }
 //
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView exam;
+    public NewExamBinding binding;
+
+    EditText examNameView;
+    EditText examLocationView;
+    EditText examTimeView;
+    EditText examDetailView;
+    TextView exam;
 
         ViewHolder(View view) {
             super(view);
             exam = view.findViewById(R.id.displayExamDetail);
+            examNameView = view.findViewById(R.id.newExamName);
+            examLocationView = view.findViewById(R.id.newExamLocation);
+            examTimeView = view.findViewById(R.id.newExamTime);
+            examDetailView = view.findViewById(R.id.newExamDetail);
         }
     }
 }

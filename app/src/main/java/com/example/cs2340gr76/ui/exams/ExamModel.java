@@ -48,6 +48,21 @@ public class ExamModel {
         this.id = id;
     }
 
+    public ExamModel() {
+        this.id = -1;
+        this.name = null;
+        this.location = null;
+        this.time = null;
+        this.detail = null;
+    }
+
+    public ExamModel(int id, String name, String location, String time, String detail) {
+        this.id = id;
+        this.name = name;
+        this.location = location;
+        this.detail = detail;
+        this.time = time;
+    }
 
     @NonNull
     @Override

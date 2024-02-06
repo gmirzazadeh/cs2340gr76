@@ -110,24 +110,30 @@ public class AddNewExam extends BottomSheetDialogFragment {
         });
 
         final boolean finalIsUpdate = isUpdate;
+
         newExamSaveButton.setOnClickListener(v -> {
             String name = newExamName.getText().toString();
             String location = newExamLocation.getText().toString();
             String time = newExamTime.getText().toString();
             String detail = newExamDetail.getText().toString();
+
             if(finalIsUpdate){
-                db.updateName(bundle.getInt("id"), name);
-                db.updateLocation(bundle.getInt("id"), location);
-                db.updateTime(bundle.getInt("id"), time);
-                db.updateDetail(bundle.getInt("id"), detail);
+                ExamModel updatedExam = new ExamModel(bundle.getInt("id"), name, location, time, detail);
+//                updatedExam.setId(bundle.getInt("id"));
+
+                db.updateExam(updatedExam);
+//                db.updateName(bundle.getInt("id"), name);
+//                db.updateLocation(bundle.getInt("id"), location);
+//                db.updateTime(bundle.getInt("id"), time);
+//                db.updateDetail(bundle.getInt("id"), detail);
             }
             else {
-                ExamModel exam = new ExamModel();
-                exam.setName(name);
-                exam.setLocation(location);
-                exam.setTime(time);
-                exam.setDetail(detail);
-                db.insertTask(exam);
+                ExamModel exam = new ExamModel(-1, name, location, time, detail);
+//                exam.setName(name);
+//                exam.setLocation(location);
+//                exam.setTime(time);
+//                exam.setDetail(detail);
+                db.insertExam(exam);
             }
             db.closeDatabase();
 

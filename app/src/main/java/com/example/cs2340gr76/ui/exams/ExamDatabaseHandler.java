@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +22,12 @@ public class ExamDatabaseHandler extends SQLiteOpenHelper {
     private static final String DETAILS = "details";
 
     private static final String TIME = "time";
-    private static final String CREATE_EXAM_TABLE = "CREATE TABLE " + EXAM_TABLE + "(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NAME + " TEXT, "
-            + LOCATION + " TEXT, " + DETAILS + " TEXT, " + TIME + " TEXT)";
+    private static final String CREATE_EXAM_TABLE = "CREATE TABLE " + EXAM_TABLE + "(" +
+            ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            NAME + " TEXT, " +
+            LOCATION + " TEXT, " +
+            TIME + " TEXT, " +
+            DETAILS + " TEXT)";
 
     private SQLiteDatabase db;
 
@@ -47,7 +52,7 @@ public class ExamDatabaseHandler extends SQLiteOpenHelper {
         db = this.getWritableDatabase();
     }
 
-    public void insertTask(ExamModel exam){
+    public long insertExam(ExamModel exam){
         ContentValues cv = new ContentValues();
         cv.put(ID, exam.getId());
         cv.put(NAME, exam.getName());
@@ -55,6 +60,10 @@ public class ExamDatabaseHandler extends SQLiteOpenHelper {
         cv.put(TIME, exam.getTime());
         cv.put(DETAILS, exam.getDetail());
         db.insert(EXAM_TABLE, null, cv);
+
+        long id = db.insert(CREATE_EXAM_TABLE, null, cv);
+        db.close();
+        return id;
     }
 
     public List<ExamModel> getAllExams(){
@@ -86,28 +95,41 @@ public class ExamDatabaseHandler extends SQLiteOpenHelper {
         return examList;
     }
 
-    public void updateName(int id, String name){
-        ContentValues cv = new ContentValues();
-        cv.put(NAME, name);
-        db.update(EXAM_TABLE, cv, ID + "= ?", new String[] {String.valueOf(id)});
-    }
+//    public void updateName(int id, String name){
+//        ContentValues cv = new ContentValues();
+//        cv.put(NAME, name);
+//        db.update(EXAM_TABLE, cv, ID + "= ?", new String[] {String.valueOf(id)});
+//    }
+//
+//    public void updateLocation(int id, String location) {
+//        ContentValues cv = new ContentValues();
+//        cv.put(LOCATION, location);
+//        db.update(EXAM_TABLE, cv, ID + "= ?", new String[] {String.valueOf(id)});
+//    }
+//
+//    public void updateTime(int id, String time) {
+//        ContentValues cv = new ContentValues();
+//        cv.put(TIME, time);
+//        db.update(EXAM_TABLE, cv, ID + "= ?", new String[] {String.valueOf(id)});
+//    }
+//
+//    public void updateDetail(int id, String detail) {
+//        ContentValues cv = new ContentValues();
+//        cv.put(DETAILS, detail);
+//        db.update(EXAM_TABLE, cv, ID + "= ?", new String[] {String.valueOf(id)});
+//    }
 
-    public void updateLocation(int id, String location) {
+    public void updateExam(ExamModel exam) {
+        SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(LOCATION, location);
-        db.update(EXAM_TABLE, cv, ID + "= ?", new String[] {String.valueOf(id)});
-    }
 
-    public void updateTime(int id, String time) {
-        ContentValues cv = new ContentValues();
-        cv.put(TIME, time);
-        db.update(EXAM_TABLE, cv, ID + "= ?", new String[] {String.valueOf(id)});
-    }
+        cv.put(NAME, exam.getName());
+        cv.put(LOCATION, exam.getLocation());
+        cv.put(TIME, exam.getTime());
+        cv.put(DETAILS, exam.getDetail());
+        db.update(EXAM_TABLE, cv, ID + "= ?", new String[] {String.valueOf(exam.getId())});
 
-    public void updateDetail(int id, String detail) {
-        ContentValues cv = new ContentValues();
-        cv.put(DETAILS, detail);
-        db.update(EXAM_TABLE, cv, ID + "= ?", new String[] {String.valueOf(id)});
+
     }
 
     public void closeDatabase() {
@@ -118,5 +140,6 @@ public class ExamDatabaseHandler extends SQLiteOpenHelper {
 
     public void deleteExam(int id){
         db.delete(EXAM_TABLE, ID + "= ?", new String[] {String.valueOf(id)});
+        db.close();
     }
 }
