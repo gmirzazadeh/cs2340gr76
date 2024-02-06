@@ -61,7 +61,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
             holder.dateTextView.setText(formatDate(assignment.getDate()));
         }
         if (holder.timeTextView != null) {
-            holder.timeTextView.setText(assignment.getTime());
+            holder.timeTextView.setText(formatTime(assignment.getTime()));
         }
     }
 
@@ -71,6 +71,20 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
             SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
             Date date = inputFormat.parse(dateStr);
             SimpleDateFormat outputFormat = new SimpleDateFormat("MMMM dd, yyyy", Locale.US);
+            return outputFormat.format(date);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
+    private String formatTime(String timeStr) {
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("HH:mm", Locale.US);
+            Date date = inputFormat.parse(timeStr);
+            SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm", Locale.US);
             return outputFormat.format(date);
 
         } catch (ParseException e) {

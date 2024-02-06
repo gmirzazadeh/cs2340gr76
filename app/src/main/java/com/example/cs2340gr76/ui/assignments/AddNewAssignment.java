@@ -129,9 +129,7 @@ public class AddNewAssignment extends BottomSheetDialogFragment {
                 assignment.setDate(date);
                 assignment.setTime(time);
                 db.insertAssignment(assignment);
-
             }
-
 
             db.closeDatabase();
             dismiss();
