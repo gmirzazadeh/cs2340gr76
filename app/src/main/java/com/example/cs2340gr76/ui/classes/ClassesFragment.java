@@ -26,7 +26,7 @@ public class ClassesFragment extends Fragment {
         binding = FragmentClassesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.monthandYearTV;
+        final TextView textView = binding.textClasses;
         classesViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
