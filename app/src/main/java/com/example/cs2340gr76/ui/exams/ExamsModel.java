@@ -1,7 +1,5 @@
 package com.example.cs2340gr76.ui.exams;
 
-import androidx.annotation.NonNull;
-
 public class ExamsModel {
     public static final String TABLE_NAME = "exams";
 
@@ -32,7 +30,7 @@ public class ExamsModel {
     }
 
     public String getLocation() {
-        return location.toUpperCase();
+        return location;
     }
 
     public void setLocation(String location) {
@@ -70,6 +68,4 @@ public class ExamsModel {
         this.date = date;
         this.time = time;
     }
-
-
 }

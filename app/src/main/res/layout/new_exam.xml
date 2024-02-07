@@ -3,8 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+
     <EditText
-        android:id="@+id/newExamName"
+        android:id="@+id/newExamTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="15dp"
@@ -13,7 +14,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:textSize="18sp"
-        android:hint="Name"
+        android:hint="Exam Name"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
     <EditText
         android:id="@+id/newExamLocation"
@@ -25,35 +26,10 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:textSize="18sp"
-        android:hint="Location"
+        android:hint="Exam Location"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
-<!--    <Button-->
-<!--        android:id="@+id/examTimePicker"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="153dp"-->
-<!--        android:layout_marginStart="150dp"-->
-<!--        android:layout_marginEnd="20dp"-->
-<!--        android:backgroundTint="@android:color/transparent"-->
-<!--        android:text="@string/pick_time"-->
-<!--        android:textAllCaps="false"-->
-<!--        android:textColor="@color/white"-->
-<!--        android:background="@color/gray"-->
-<!--        android:textSize="13sp"/>-->
 
-<!--    <Button-->
-<!--        android:id="@+id/examDatePicker"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="153dp"-->
-<!--        android:layout_marginStart="250dp"-->
-<!--        android:layout_marginEnd="20dp"-->
-<!--        android:backgroundTint="@android:color/transparent"-->
-<!--        android:text="@string/pick_date"-->
-<!--        android:textAllCaps="false"-->
-<!--        android:textColor="@color/white"-->
-<!--        android:background="@color/gray"-->
-<!--        android:textSize="13sp"/>-->
+
     <EditText
         android:id="@+id/newExamDate"
         android:layout_width="match_parent"
@@ -77,11 +53,11 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:textSize="18sp"
-        android:hint="Military Time (HH:MM)"
+        android:hint="Time"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
     <Button
-        android:id="@+id/saveExamButton"
+        android:id="@+id/newExamBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/newExamTime"
@@ -90,10 +66,9 @@
         android:backgroundTint="@android:color/transparent"
         android:text="@string/save"
         android:textAllCaps="false"
-        android:textColor="@color/white"
+        android:textColor="@color/gray"
         android:background="@color/purple_200"
         android:textSize="17sp"/>
 
 
 </RelativeLayout>
-

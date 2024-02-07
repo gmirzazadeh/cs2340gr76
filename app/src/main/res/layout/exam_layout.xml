@@ -11,11 +11,10 @@
 
     <RelativeLayout
         android:layout_width="match_parent"  android:layout_height="wrap_content"
-        android:padding="8dp" >
-
+        android:padding="8dp">
 
         <CheckBox
-            android:id="@+id/examsCheckBox"
+            android:id="@+id/examsCheckbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"  android:layout_marginStart="10dp"
@@ -25,12 +24,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/examsCheckBox"
-            android:orientation="vertical"
+            android:layout_toEndOf="@id/examsCheckbox"  android:orientation="vertical"
             android:layout_marginStart="10dp">
 
             <TextView
-                android:id="@+id/examName"
+                android:id="@+id/examTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="Exam Title"
@@ -38,10 +36,10 @@
                 android:textSize="17sp" />
 
             <TextView
-                android:id="@+id/examLocation"
+                android:id="@+id/examLocationTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="Course Name"
+                tools:text="Exam Location"
                 android:textColor="@color/teal_700"
                 android:textSize="14sp" />
 
@@ -51,7 +49,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/examDate"
+                    android:id="@+id/examDateTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -59,7 +57,7 @@
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/examTime"
+                    android:id="@+id/examTimeTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -69,5 +67,7 @@
             </LinearLayout>
 
         </LinearLayout>
+
     </RelativeLayout>
+
 </androidx.cardview.widget.CardView>

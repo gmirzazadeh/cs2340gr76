@@ -16,10 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.example.cs2340gr76.R;
-import com.example.cs2340gr76.ui.assignments.Model.AssignmentsModel;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import java.util.Objects;
+
 
 public class AddNewExam extends BottomSheetDialogFragment {
 
@@ -30,7 +29,7 @@ public class AddNewExam extends BottomSheetDialogFragment {
     private EditText newExamTime;
     private Button newExamSaveButton;
 
-    private ExamDatabaseHandler db;
+    private ExamsDataHelper db;
 
     public static AddNewExam newInstance() {
         return new AddNewExam();
@@ -42,11 +41,13 @@ public class AddNewExam extends BottomSheetDialogFragment {
         setStyle(STYLE_NORMAL, R.style.DialogStyle);
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
 
+
+
+
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.new_exam, container, false);
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
@@ -56,11 +57,11 @@ public class AddNewExam extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        newExamName = getView().findViewById(R.id.newExamName);
+        newExamName = getView().findViewById(R.id.newExamTxt);
         newExamLocation = getView().findViewById(R.id.newExamLocation);
-        newExamDate = getView().findViewById(R.id.newExamDate);
         newExamTime = getView().findViewById(R.id.newExamTime);
-        newExamSaveButton = getView().findViewById(R.id.saveExamButton);
+        newExamDate = getView().findViewById(R.id.newExamDate);
+        newExamSaveButton = getView().findViewById(R.id.newExamBtn);
 
         boolean isUpdate = false;
 
@@ -73,19 +74,19 @@ public class AddNewExam extends BottomSheetDialogFragment {
             newExamLocation.setText(name);
             String time = bundle.getString("time");
             newExamTime.setText(name);
-            String detail = bundle.getString("detail");
+            String date = bundle.getString("date");
             newExamDate.setText(name);
 
             assert name != null;
             assert location != null;
             assert time != null;
-            assert detail != null;
+            assert date != null;
 
             if(name.length()>0)
-                newExamSaveButton.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+                newExamSaveButton.setTextColor(ContextCompat.getColor(getContext(), R.color.teal_700));
         }
 
-        db = new ExamDatabaseHandler(getActivity());
+        db = new ExamsDataHelper(getActivity());
         db.openDatabase();
 
         newExamName.addTextChangedListener(new TextWatcher() {
@@ -101,7 +102,7 @@ public class AddNewExam extends BottomSheetDialogFragment {
                 }
                 else{
                     newExamSaveButton.setEnabled(true);
-                    newExamSaveButton.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+                    newExamSaveButton.setTextColor(ContextCompat.getColor(getContext(), R.color.teal_700));
                 }
             }
 
@@ -115,23 +116,19 @@ public class AddNewExam extends BottomSheetDialogFragment {
         newExamSaveButton.setOnClickListener(v -> {
             String name = newExamName.getText().toString();
             String location = newExamLocation.getText().toString();
-            String date = newExamDate.getText().toString();
             String time = newExamTime.getText().toString();
+            String date = newExamDate.getText().toString();
 
-            ExamsModel updatedExam = new ExamsModel(
-                    name, location, date, time);
+            ExamsModel updatedExam = new ExamsModel(name, location, date, time);
 
             if(finalIsUpdate){
                 updatedExam.setId(bundle.getInt("id"));
 
-                db.updateExam(updatedExam);
-            } else {
 
-                ExamsModel exam = new ExamsModel(null, null, null, null);
-                exam.setName(name);
-                exam.setLocation(location);
-                exam.setDate(date);
-                exam.setTime(time);
+                db.updateExam(updatedExam);
+            }
+            else {
+                ExamsModel exam = new ExamsModel(name, location, date, time);
                 db.insertExam(exam);
             }
             db.closeDatabase();

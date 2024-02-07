@@ -15,13 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.example.cs2340gr76.databinding.FragmentAssignmentsBinding;
 import com.example.cs2340gr76.databinding.FragmentExamsBinding;
-import com.example.cs2340gr76.ui.assignments.Adapter.AssignmentsAdapter;
-import com.example.cs2340gr76.ui.assignments.AddNewAssignment;
-import com.example.cs2340gr76.ui.assignments.AssignmentsViewModel;
-import com.example.cs2340gr76.ui.assignments.RecyclerItemAssignments;
-import com.example.cs2340gr76.ui.assignments.Utils.AssignmentsDataHelper;
+import com.example.cs2340gr76.ui.todo.DialogCloseListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -34,16 +29,17 @@ public class ExamsFragment extends Fragment implements DialogCloseListener {
 
     private FragmentExamsBinding binding;
     private RecyclerView examsRecyclerView;
-    private ExamAdapter examsAdaptor;
-    private List<ExamsModel> examsList;
     private FloatingActionButton addFab;
     private FloatingActionButton sortFab;
-
-    private ExamDatabaseHandler db;
+    private FloatingActionButton timeSortFab;
+    private ExamsAdapter examsAdapter;
+    private List<ExamsModel> exams;
+    private ExamsDataHelper db;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        ExamsViewModel assignmentsViewModel =
+        ExamsViewModel examsViewModel =
+
                 new ViewModelProvider(this).get(ExamsViewModel.class);
 
         binding = FragmentExamsBinding.inflate(inflater, container, false);
@@ -51,31 +47,42 @@ public class ExamsFragment extends Fragment implements DialogCloseListener {
 
         final TextView textView = binding.textExams;
 
-        db = new ExamDatabaseHandler(this.getContext());
+        db = new ExamsDataHelper(this.getContext());
+
+
         db.openDatabase();
 
         examsRecyclerView = binding.examsRecyclerView;
         examsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        examsAdaptor = new ExamAdapter(db, this);
-        examsRecyclerView.setAdapter(examsAdaptor);
+        examsAdapter = new ExamsAdapter(db, this);
+        examsRecyclerView.setAdapter(examsAdapter);
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ExamRecyclerTouchHelper(examsAdaptor));
+
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ExamRecyclerTouchHelper(examsAdapter));
         itemTouchHelper.attachToRecyclerView(examsRecyclerView);
 
-        addFab = binding.examsFab;
-        examsList = db.getAllExams();
-        examsAdaptor.setExams(examsList);
-        examsAdaptor.notifyItemChanged(0, examsList.size());
+        addFab = binding.examsAdd;
+        exams = db.getAllExams();
+        examsAdapter.setExams(exams);
+        examsAdapter.notifyItemChanged(0, exams.size());
 
         addFab.setOnClickListener(v -> AddNewExam.newInstance().show(getParentFragmentManager(), AddNewExam.TAG));
 
-        sortFab = binding.examsSortTime;
+        sortFab = binding.examsSort;
         sortFab.setOnClickListener(v -> {
-            examsAdaptor.sortAssignments(true);
+            examsAdapter.sortExams(true);
+        });
+
+        timeSortFab = binding.examsSortTime;
+        timeSortFab.setOnClickListener(v -> {
+            examsAdapter.sortExams(false);
         });
 
         return root;
     }
+
+
 
     @Override
     public void onDestroyView() {
@@ -84,9 +91,10 @@ public class ExamsFragment extends Fragment implements DialogCloseListener {
     }
 
     @Override
-    public void handleDialogClose(DialogInterface dialog) {
-        examsList = db.getAllExams();
-        examsAdaptor.setExams(examsList);
-        examsAdaptor.notifyDataSetChanged();
+    public void handleDialogClose(DialogInterface dialog){
+        exams = db.getAllExams();
+        examsAdapter.setExams(exams);
+        examsAdapter.notifyDataSetChanged();
+
     }
 }
