@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".ui.home.HomeFragment">
 
     <TextView
         android:id="@+id/text_home"
@@ -19,17 +19,6 @@
         android:textStyle="bold"
         android:textAlignment="center"
         android:textColor="@color/black" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Weekly"
-        android:textColor="@color/white"
-        android:background="@null"
-        android:textStyle="bold"
-        android:onClick="weeklyAction"
-        android:textSize="15sp"/>
 
 
     <LinearLayout
@@ -47,7 +36,8 @@
             android:textColor="@color/white"
             android:background="@null"
             android:textStyle="bold"
-            android:textSize="15sp"/>
+            android:textSize="15sp"
+            android:layout_marginLeft="5dp"/>
 
         <TextView
             android:id="@+id/monthYearTV"
@@ -63,11 +53,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Forward"
+            android:text="Next"
             android:textColor="@color/white"
             android:background="@null"
             android:textStyle="bold"
-            android:textSize="13sp"/>
+            android:textSize="15sp"
+            android:layout_marginRight="5dp"/>
 
     </LinearLayout>
 
