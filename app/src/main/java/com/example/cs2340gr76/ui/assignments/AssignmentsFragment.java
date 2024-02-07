@@ -34,7 +34,7 @@ public class AssignmentsFragment extends Fragment implements DialogCloseListener
     private FragmentAssignmentsBinding binding;
     private RecyclerView assignmentsRecyclerView;
     private FloatingActionButton addFab;
-    private FloatingActionButton sortFab;
+    private FloatingActionButton courseSortFab;
     private FloatingActionButton timeSortFab;
     private AssignmentsAdapter assignmentsAdapter;
     private List<AssignmentsModel> assignments;
@@ -68,8 +68,8 @@ public class AssignmentsFragment extends Fragment implements DialogCloseListener
 
         addFab.setOnClickListener(v -> AddNewAssignment.newInstance().show(getParentFragmentManager(), AddNewAssignment.TAG));
 
-        sortFab = binding.assignmentsSort;
-        sortFab.setOnClickListener(v -> {
+        courseSortFab = binding.assignmentsSort;
+        courseSortFab.setOnClickListener(v -> {
             assignmentsAdapter.sortAssignments(true);
         });
 
