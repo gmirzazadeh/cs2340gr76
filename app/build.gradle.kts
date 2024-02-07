@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.cs2340gr76"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -33,15 +33,16 @@ android {
 
 dependencies {
 
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.recyclerview:recyclerview:1.2.0-alpha03") // new
-    implementation("com.google.android.material:material:1.11.0")
+    implementation("androidx.appcompat:appcompat:1.4.0")
+    implementation("androidx.recyclerview:recyclerview:1.2.0") // new
+    implementation("com.google.android.material:material:1.4.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
-    implementation("androidx.navigation:navigation-fragment:2.7.6")
-    implementation("androidx.navigation:navigation-ui:2.7.6")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
+    implementation("androidx.navigation:navigation-fragment:2.4.0")
+    implementation("androidx.navigation:navigation-ui:2.4.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation("com.github.gastricspark:scrolldatepicker:0.0.1")
 }

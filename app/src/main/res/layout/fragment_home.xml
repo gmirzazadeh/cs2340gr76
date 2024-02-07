@@ -8,7 +8,7 @@
     tools:context=".ui.home.HomeFragment">
 
     <TextView
-        android:id="@+id/text_home"
+        android:id="@+id/text_home_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -16,6 +16,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginEnd="8dp"
         android:textSize="20sp"
+        android:text="Weekly Scheduler"
         android:textStyle="bold"
         android:textAlignment="center"
         android:textColor="@color/black" />
@@ -44,7 +45,7 @@
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="wrap_content"
-            android:text="Feb 2024"
+            android:text="Feb 2026"
             android:textSize="20sp"
             android:textAlignment="center"
             android:textColor="@color/black"/>
@@ -133,6 +134,11 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/calendarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/calendarRecyclerView"
