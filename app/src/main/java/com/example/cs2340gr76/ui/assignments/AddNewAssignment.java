@@ -16,13 +16,14 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.example.cs2340gr76.R;
-
+import com.example.cs2340gr76.ui.assignments.Adapter.AssignmentsAdapter;
 import com.example.cs2340gr76.ui.assignments.Model.AssignmentsModel;
 import com.example.cs2340gr76.ui.assignments.Utils.AssignmentsDataHelper;
 import com.example.cs2340gr76.ui.todo.DialogCloseListener;
-
+import com.example.cs2340gr76.ui.todo.Model.ToDoModel;
+import com.example.cs2340gr76.ui.todo.Utils.DatabaseHandler;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
+import com.google.android.material.textfield.TextInputEditText;
 
 public class AddNewAssignment extends BottomSheetDialogFragment {
     public static final String TAG = "ActionBottomDialog";
