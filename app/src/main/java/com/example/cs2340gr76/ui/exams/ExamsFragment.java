@@ -30,7 +30,6 @@ public class ExamsFragment extends Fragment implements DialogCloseListener {
     private FragmentExamsBinding binding;
     private RecyclerView examsRecyclerView;
     private FloatingActionButton addFab;
-    private FloatingActionButton sortFab;
     private FloatingActionButton timeSortFab;
     private ExamsAdapter examsAdapter;
     private List<ExamsModel> exams;
@@ -69,14 +68,9 @@ public class ExamsFragment extends Fragment implements DialogCloseListener {
 
         addFab.setOnClickListener(v -> AddNewExam.newInstance().show(getParentFragmentManager(), AddNewExam.TAG));
 
-        sortFab = binding.examsSort;
-        sortFab.setOnClickListener(v -> {
-            examsAdapter.sortExams(true);
-        });
-
         timeSortFab = binding.examsSortTime;
         timeSortFab.setOnClickListener(v -> {
-            examsAdapter.sortExams(false);
+            examsAdapter.sortExams(true);
         });
 
         return root;

@@ -64,25 +64,13 @@
         android:backgroundTint="@color/purple_200"
         android:src="@drawable/add" />
 
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/examsSort"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="175dp"
-        android:layout_marginEnd="35dp"
-        android:backgroundTint="@color/purple_200"
-        android:src="@drawable/sort" />
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/examsSortTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="250dp"
+        android:layout_marginBottom="175dp"
         android:layout_marginEnd="35dp"
         android:backgroundTint="@color/purple_200"
         android:src="@drawable/time" />

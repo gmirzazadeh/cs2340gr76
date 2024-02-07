@@ -50,10 +50,10 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
             holder.examLocationView.setText(item.getLocation());
         }
         if (holder.examDateView != null) {
-            holder.examDateView.setText(item.getDate());
+            holder.examDateView.setText(formatDate(item.getDate()));
         }
         if (holder.examTimeView != null) {
-            holder.examTimeView.setText(item.getTime());
+            holder.examTimeView.setText(formatTime(item.getTime()));
         }
 //        holder.binding.newExamName.setText(item.getName());
 //        holder.binding.newExamLocation.setText(item.getLocation());
@@ -106,10 +106,6 @@ public class ExamsAdapter extends RecyclerView.Adapter<ExamsAdapter.ViewHolder> 
 
     public void sortExams(boolean sortCourse) {
         if (sortCourse) {
-            examList.sort(Comparator.comparing(ExamsModel::getName)
-                    .thenComparing(ExamsModel::getDate)
-                    .thenComparing(ExamsModel::getTime));
-        } else {
             examList.sort(Comparator.comparing(ExamsModel::getDate)
                     .thenComparing(ExamsModel::getTime)
                     .thenComparing(ExamsModel::getName));
