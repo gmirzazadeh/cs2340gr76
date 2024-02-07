@@ -10,4 +10,7 @@
     <string name="save">Save</string>
     <string name="pick_time">Time</string>
     <string name="pick_date">Date</string>
+    <string name="back"><![CDATA[<-]]></string>
+    <string name="forward"><![CDATA[->]]></string>
+    <string name="new_event">New Event</string>
 </resources>

@@ -9,25 +9,7 @@
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical"
-    tools:context=".MainActivity">
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Weekly"
-        android:textColor="@color/black"
-        android:background="@null"
-        android:textStyle="bold"
-        android:onClick="weeklyAction"
-        android:textSize="20sp"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Home"
-        android:textColor="@color/black"
-        android:background="@null"
-        android:textStyle="bold"
-        android:onClick="goHome"
-        android:textSize="20sp"/>
+    tools:context=".WeekViewActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,7 +24,7 @@
             android:textColor="@color/black"
             android:background="@null"
             android:textStyle="bold"
-            android:onClick="previousMonthAction"
+            android:onClick="previousWeekAction"
             android:textSize="20sp"/>
 
 
@@ -70,7 +52,7 @@
             android:textColor="@color/black"
             android:background="@null"
             android:textStyle="bold"
-            android:onClick="nextMonthAction"
+            android:onClick="nextWeekAction"
             android:textSize="20sp"/>
 
     </LinearLayout>
@@ -138,24 +120,23 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/calendarRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    <Button
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:menu="@menu/nav_menu" />
-
-    <fragment
-        android:id="@+id/nav_host_fragment_activity_main"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/new_event"
+        android:textColor="@color/black"
+        android:background="@null"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:onClick="newEventAction"
+        android:textSize="20sp"/>
+    <ListView
+        android:id="@+id/eventListView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/mobile_navigation"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_weight="5"/>
+
 </LinearLayout>
