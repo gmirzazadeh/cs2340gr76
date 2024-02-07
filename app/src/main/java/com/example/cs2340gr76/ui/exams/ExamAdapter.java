@@ -13,12 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.cs2340gr76.R;
 import com.example.cs2340gr76.databinding.FragmentExamsBinding;
 import com.example.cs2340gr76.databinding.NewExamBinding;
+import com.example.cs2340gr76.ui.assignments.Model.AssignmentsModel;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
 
-    private List<ExamModel> examList;
+    private List<ExamsModel> examList;
     private ExamDatabaseHandler db;
     private ExamsFragment fragment;
 
@@ -37,7 +43,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
 
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         db.openDatabase();
-        final ExamModel item = examList.get(position);
+        final ExamsModel item = examList.get(position);
         if (holder.examNameView != null) {
             holder.examNameView.setText(item.getName());
         }
@@ -45,15 +51,11 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
             holder.examLocationView.setText(item.getLocation());
         }
         if (holder.examDetailView != null) {
-            holder.examDetailView.setText(item.getDetail());
+            holder.examDetailView.setText(item.getDate());
         }
         if (holder.examTimeView != null) {
             holder.examTimeView.setText(item.getTime());
         }
-//        holder.binding.newExamName.setText(item.getName());
-//        holder.binding.newExamLocation.setText(item.getLocation());
-//        holder.binding.newExamDetail.setText(item.getDetail());
-//        holder.binding.newExamTime.setText(item.getTime());
 
     }
 
@@ -62,7 +64,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
         return examList.size();
     }
 
-    public void setExams(List<ExamModel> examList) {
+    public void setExams(List<ExamsModel> examList) {
         this.examList = examList;
         notifyDataSetChanged();
     }
@@ -70,97 +72,68 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
         return fragment.getContext();
     }
 
-    public void setTasks(List<ExamModel> examList) {
+    public void setTasks(List<ExamsModel> examList) {
         this.examList = examList;
         notifyDataSetChanged();
     }
 
     public void deleteItem(int position) {
-        ExamModel item = examList.get(position);
-        db.deleteExam(item.getId());
+        ExamsModel item = examList.get(position);
+        db.deleteExam(item);
         examList.remove(position);
         notifyItemRemoved(position);
     }
 
     public void editItem(int position) {
-        ExamModel item = examList.get(position);
+        ExamsModel item = examList.get(position);
         Bundle bundle = new Bundle();
         bundle.putInt("id", item.getId());
         bundle.putString("name", item.getName());
         bundle.putString("location", item.getLocation());
-        bundle.putString("time", item.getTime());
-        bundle.putString("detail", item.getDetail());
+        bundle.putString("date", formatDate(item.getDate()));
+        bundle.putString("time", formatTime(item.getTime()));
         AddNewExam fragment = new AddNewExam();
         fragment.setArguments(bundle);
         fragment.show(fragment.getParentFragmentManager(), AddNewExam.TAG);
     }
 
-//    public ExamAdapter(DatabaseHandler db, ExamsFragment fragment) {
-//        this.db = db;
-//        this.fragment = fragment;
-//    }
-//
-//    @NonNull
-//    @Override
-//    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        View itemView = LayoutInflater.from(parent.getContext())
-//                .inflate(R.layout.fragment_exams, parent, false);
-//        return new ViewHolder(itemView);
-//    }
-//
-//    @Override
-//    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-//        db.openDatabase();
-//
-//        final ExamModel item = examList.get(position);
-//        holder.task.setText(item.toString());
-//        holder.task.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if (isChecked) {
-//                    db.updateStatus(item.getId(), 1);
-//                } else {
-//                    db.updateStatus(item.getId(), 0);
-//                }
-//            }
-//        });
-//    }
-//
-//    private boolean toBoolean(int n) {
-//        return n != 0;
-//    }
-//
-//    @Override
-//    public int getItemCount() {
-//        return examList.size();
-//    }
-//
-//    public Context getContext() {
-//        return fragment;
-//    }
-//
-//    public void setTasks(List<ExamModel> todoList) {
-//        this.examList = todoList;
-//        notifyDataSetChanged();
-//    }
-//
-//    public void deleteItem(int position) {
-//        ExamModel item = examList.get(position);
-//        db.deleteExam(item.getId());
-//        examList.remove(position);
-//        notifyItemRemoved(position);
-//    }
-//
-//    public void editItem(int position) {
-//        ExamModel item = examList.get(position);
-//        Bundle bundle = new Bundle();
-//        bundle.putInt("id", item.getId());
-//        bundle.putString("task", item.toString());
-//        AddNewExam fragment = new AddNewExam();
-//        fragment.setArguments(bundle);
-//        fragment.show(fragment.getSupportFragmentManager(), AddNewExam.TAG);
-//    }
-//
+    private String formatDate(String dateStr) {
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+            Date date = inputFormat.parse(dateStr);
+            SimpleDateFormat outputFormat = new SimpleDateFormat("E, MMM dd, yyyy", Locale.US);
+            return outputFormat.format(date);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
+    private String formatTime(String timeStr) {
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("HH:mm", Locale.US);
+            Date date = inputFormat.parse(timeStr);
+            SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm z", Locale.US);
+            return outputFormat.format(date);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
+    public void sortAssignments(boolean sortCourse) {
+        if (sortCourse) {
+            examList.sort(Comparator.comparing(ExamsModel::getDate)
+                    .thenComparing(ExamsModel::getTime));
+        }
+        notifyDataSetChanged();
+    }
+
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
     public NewExamBinding binding;
 
@@ -172,11 +145,10 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
 
         ViewHolder(View view) {
             super(view);
-            exam = view.findViewById(R.id.displayExamDetail);
             examNameView = view.findViewById(R.id.newExamName);
             examLocationView = view.findViewById(R.id.newExamLocation);
             examTimeView = view.findViewById(R.id.newExamTime);
-            examDetailView = view.findViewById(R.id.newExamDetail);
+            examDetailView = view.findViewById(R.id.newExamDate);
         }
     }
 }

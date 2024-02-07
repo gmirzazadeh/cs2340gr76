@@ -10,12 +10,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.cs2340gr76.databinding.FragmentAssignmentsBinding;
 import com.example.cs2340gr76.databinding.FragmentExamsBinding;
+import com.example.cs2340gr76.ui.assignments.Adapter.AssignmentsAdapter;
 import com.example.cs2340gr76.ui.assignments.AddNewAssignment;
+import com.example.cs2340gr76.ui.assignments.AssignmentsViewModel;
+import com.example.cs2340gr76.ui.assignments.RecyclerItemAssignments;
+import com.example.cs2340gr76.ui.assignments.Utils.AssignmentsDataHelper;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,64 +33,49 @@ import java.util.List;
 public class ExamsFragment extends Fragment implements DialogCloseListener {
 
     private FragmentExamsBinding binding;
+    private RecyclerView examsRecyclerView;
     private ExamAdapter examsAdaptor;
-    private List<ExamModel> examsList;
+    private List<ExamsModel> examsList;
+    private FloatingActionButton addFab;
+    private FloatingActionButton sortFab;
 
     private ExamDatabaseHandler db;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
-        ExamsViewModel dashboardViewModel =
+        ExamsViewModel assignmentsViewModel =
                 new ViewModelProvider(this).get(ExamsViewModel.class);
 
         binding = FragmentExamsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-//        final TextView textView = binding.textExams;
+        final TextView textView = binding.textExams;
 
-//        dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-
-        db = new ExamDatabaseHandler(this.getActivity());
+        db = new ExamDatabaseHandler(this.getContext());
         db.openDatabase();
 
-        examsList = new ArrayList<>();
-
-        binding.examsRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+        examsRecyclerView = binding.examsRecyclerView;
+        examsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         examsAdaptor = new ExamAdapter(db, this);
-        binding.examsRecyclerView.setAdapter(examsAdaptor);
+        examsRecyclerView.setAdapter(examsAdaptor);
 
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ExamRecyclerTouchHelper(examsAdaptor));
+        itemTouchHelper.attachToRecyclerView(examsRecyclerView);
 
-
+        addFab = binding.examsFab;
+        examsList = db.getAllExams();
+        examsAdaptor.setExams(examsList);
         examsAdaptor.notifyItemChanged(0, examsList.size());
 
-        binding.examsFab.setOnClickListener(v -> AddNewExam.newInstance().show(getParentFragmentManager(), AddNewExam.TAG));
+        addFab.setOnClickListener(v -> AddNewExam.newInstance().show(getParentFragmentManager(), AddNewExam.TAG));
 
-        examsList = db.getAllExams();
-        Collections.reverse(examsList);
-        examsAdaptor.setExams(examsList);
-
-//        ExamModel exam = new ExamModel();
-//        exam.setName("Exam 1");
-//        exam.setLocation("CULC");
-//        exam.setDetail("CS Exam");
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.set(Calendar.YEAR, 2018);
-//        calendar.set(Calendar.MONTH, 11);
-//        calendar.set(Calendar.DATE, 18);
-//        exam.setTime(calendar);
-//        exam.setId(5);
-//        examsList.add(exam);
-//        examsList.add(exam);
-//        examsList.add(exam);
-//
-//        examsAdaptor.setExams(examsList);
+        sortFab = binding.examsSortTime;
+        sortFab.setOnClickListener(v -> {
+            examsAdaptor.sortAssignments(true);
+        });
 
         return root;
     }
-
-
-
 
     @Override
     public void onDestroyView() {
@@ -92,11 +84,9 @@ public class ExamsFragment extends Fragment implements DialogCloseListener {
     }
 
     @Override
-    public void handleDialogClose(DialogInterface dialog){
+    public void handleDialogClose(DialogInterface dialog) {
         examsList = db.getAllExams();
-        Collections.reverse(examsList);
         examsAdaptor.setExams(examsList);
         examsAdaptor.notifyDataSetChanged();
     }
-
 }

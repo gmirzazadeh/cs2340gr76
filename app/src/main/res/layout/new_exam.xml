@@ -55,7 +55,7 @@
 <!--        android:background="@color/gray"-->
 <!--        android:textSize="13sp"/>-->
     <EditText
-        android:id="@+id/newExamTime"
+        android:id="@+id/newExamDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="15dp"
@@ -64,11 +64,11 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:textSize="18sp"
-        android:hint="MM/DD/YYYY/HOUR/MINUTE"
+        android:hint="Date (YYYY-MM-DD)"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
     <EditText
-        android:id="@+id/newExamDetail"
+        android:id="@+id/newExamTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="15dp"
@@ -77,14 +77,14 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:textSize="18sp"
-        android:hint="Details"
+        android:hint="Military Time (HH:MM)"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
     <Button
         android:id="@+id/saveExamButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/newExamDetail"
+        android:layout_below="@id/newExamTime"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:backgroundTint="@android:color/transparent"
