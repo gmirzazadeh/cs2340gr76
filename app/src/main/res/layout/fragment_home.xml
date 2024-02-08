@@ -29,17 +29,6 @@
         android:layout_marginBottom="20dp"
         android:layout_marginTop="20dp">
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Back"
-            android:textColor="@color/white"
-            android:background="@null"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:layout_marginLeft="5dp"/>
-
         <TextView
             android:id="@+id/monthYearTV"
             android:layout_width="0dp"
@@ -49,17 +38,6 @@
             android:textSize="20sp"
             android:textAlignment="center"
             android:textColor="@color/black"/>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Next"
-            android:textColor="@color/white"
-            android:background="@null"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:layout_marginRight="5dp"/>
 
     </LinearLayout>
 
@@ -143,13 +121,63 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/calendarRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="53dp" />
+        android:layout_height="20dp" />
 
     <TextView
         android:id="@+id/textviewClasses"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Schedule:" />
+        android:text="" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textviewClassesSUN"
+            android:layout_width="59dp"
+            android:layout_height="519dp"
+            android:text=" " />
+
+        <TextView
+            android:id="@+id/textviewClassesMON"
+            android:layout_width="59dp"
+            android:layout_height="match_parent"
+            android:text=" " />
+
+        <TextView
+            android:id="@+id/textviewClassesTUES"
+            android:layout_width="59dp"
+            android:layout_height="match_parent"
+            android:text=" " />
+
+        <TextView
+            android:id="@+id/textviewClassesWED"
+            android:layout_width="59dp"
+            android:layout_height="match_parent"
+            android:text=" " />
+
+        <TextView
+            android:id="@+id/textviewClassesTHURS"
+            android:layout_width="59dp"
+            android:layout_height="match_parent"
+            android:text=" " />
+
+        <TextView
+            android:id="@+id/textviewClassesFRI"
+            android:layout_width="59dp"
+            android:layout_height="match_parent"
+            android:text=" " />
+
+        <TextView
+            android:id="@+id/textviewClassesSAT"
+            android:layout_width="57dp"
+            android:layout_height="match_parent"
+            android:text=" " />
+
+    </LinearLayout>
 
 
 </LinearLayout>

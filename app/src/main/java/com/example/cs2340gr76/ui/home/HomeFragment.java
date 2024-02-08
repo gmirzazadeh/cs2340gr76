@@ -31,6 +31,8 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private TextView textView;
     private SharedViewModel sharedViewModel;
+    private StringBuilder accumulatedClasses = new StringBuilder();
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -100,14 +102,38 @@ public class HomeFragment extends Fragment {
 
     private void displayClasses(List<String> classes) {
         StringBuilder stringBuilder = new StringBuilder();
-
+        if (classes.isEmpty()) {
+            accumulatedClasses.setLength(0);
+        }
         for (String classModel : classes) {
-            stringBuilder.append(classModel).append("\n");
+            accumulatedClasses.append(classModel).append("\n\n\n");
         }
 
         // Assuming you have a TextView with id 'textViewClasses' in your layout
         TextView textViewClasses = getView().findViewById(R.id.textviewClasses);
-        textViewClasses.setText(stringBuilder.toString());
+        String classesFull = accumulatedClasses.toString();
+        String[] classesArray = classesFull.split("\n\n\n");
+        for (String aClass : classesArray) {
+            String[] classCharacteristics = aClass.split("\n");
+            String[] selectedDaysArray = classCharacteristics[2].split(": ");
+            String cleanString = selectedDaysArray[1].replaceAll("[\\[\\]\\s]", "");
+            String[] daysOfClasses = cleanString.split(",");
+            for(String day: daysOfClasses) {
+                String printString = classCharacteristics[0].split(": ")[1] +"\n" + classCharacteristics[1].split(": ")[1] +"\n" + classCharacteristics[3].split(": ")[1];
+                if (day.equals("Monday")) {
+                    binding.textviewClassesMON.setText(binding.textviewClassesMON.getText().toString() +"\n\n" + printString);
+                } else if (day.equals("Tuesday")) {
+                    binding.textviewClassesTUES.setText(binding.textviewClassesTUES.getText().toString() +"\n\n" + printString);
+                } else if (day.equals("Wednesday")) {
+                    binding.textviewClassesWED.setText(binding.textviewClassesWED.getText().toString() +"\n\n" + printString);
+                } else if (day.equals("Thursday")) {
+                    binding.textviewClassesTHURS.setText(binding.textviewClassesTHURS.getText().toString() +"\n\n" + printString);
+                } else if (day.equals("Friday")) {
+                    binding.textviewClassesFRI.setText(binding.textviewClassesFRI.getText().toString() +"\n\n" + printString);
+                }
+            }
+        }
+
     }
 
     @Override
