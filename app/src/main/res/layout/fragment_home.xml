@@ -143,6 +143,13 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/calendarRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="53dp" />
+
+    <TextView
+        android:id="@+id/textviewClasses"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Schedule:" />
+
 
 </LinearLayout>

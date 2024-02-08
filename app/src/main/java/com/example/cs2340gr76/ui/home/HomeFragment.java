@@ -13,7 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.cs2340gr76.R;
 import com.example.cs2340gr76.databinding.FragmentHomeBinding;
+import com.example.cs2340gr76.ui.classes.ClassModel;
+import com.example.cs2340gr76.ui.classes.ClassesFragment;
+import com.example.cs2340gr76.ui.classes.SharedViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,14 +30,18 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     private TextView textView;
+    private SharedViewModel sharedViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         HomeViewModel homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
 
+
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
         textView = binding.monthYearTV;
         //homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
@@ -41,10 +49,7 @@ public class HomeFragment extends Fragment {
         homeViewModel.getCurrentMonthYear().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String newMonthYear) {
-                // Update the UI based on the new month and year value
                 textView.setText(newMonthYear);
-                // You can also update your calendar based on the new month and year value
-                // updateCalendar(newMonthYear);
                 updateCalendar();
             }
         });
@@ -52,6 +57,10 @@ public class HomeFragment extends Fragment {
         Calendar calendar = Calendar.getInstance();
         String currentDate = new SimpleDateFormat("MMMM yyyy", Locale.getDefault()).format(calendar.getTime());
         //binding.textHome.setText(currentDate);
+        sharedViewModel.getScheduledClasses().observe(getViewLifecycleOwner(), classes -> {
+            // Update your UI in HomeFragment based on the observed scheduledClasses
+            displayClasses(classes);
+        });
 
         return root;
     }
@@ -61,10 +70,8 @@ public class HomeFragment extends Fragment {
     }
 
     private void updateCalendar() {
-        // Clear any existing views in the calendar layout
         binding.calendarLayout.removeAllViews();
 
-        // Get the start and end dates of the current week
         Calendar currentWeekStart = Calendar.getInstance();
         currentWeekStart.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
         currentWeekStart.set(Calendar.HOUR_OF_DAY, 0);
@@ -74,7 +81,6 @@ public class HomeFragment extends Fragment {
         Calendar currentWeekEnd = (Calendar) currentWeekStart.clone();
         currentWeekEnd.add(Calendar.DAY_OF_WEEK, 6);
 
-        // Populate the list of dates for the current week
         List<String> dates = new ArrayList<>();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         for (int i = 0; i < 7; i++) {
@@ -82,7 +88,6 @@ public class HomeFragment extends Fragment {
             currentWeekStart.add(Calendar.DAY_OF_MONTH, 1);
         }
 
-        // Display the dates in your UI (you may use a RecyclerView, TextViews, or any other UI element)
         for (String date : dates) {
             TextView dateTextView = new TextView(requireContext());
             date = date.substring(0,2);
@@ -92,6 +97,19 @@ public class HomeFragment extends Fragment {
             binding.calendarLayout.addView(dateTextView);
         }
     }
+
+    private void displayClasses(List<String> classes) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (String classModel : classes) {
+            stringBuilder.append(classModel).append("\n");
+        }
+
+        // Assuming you have a TextView with id 'textViewClasses' in your layout
+        TextView textViewClasses = getView().findViewById(R.id.textviewClasses);
+        textViewClasses.setText(stringBuilder.toString());
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
