@@ -11,12 +11,15 @@ public class ClassModel {
     private List<String> selectedDays;
     private String location;
 
+    private String instructor;
+
     // Constructors
-    public ClassModel(String className, String meetingTime, String location, List<String> selectedDays) {
+    public ClassModel(String className, String meetingTime, String location, List<String> selectedDays, String instructor) {
         this.className = className;
         this.meetingTime = meetingTime;
         this.selectedDays = selectedDays;
         this.location = location;
+        this.instructor = instructor;
     }
 
     // Getters and setters
@@ -51,6 +54,13 @@ public class ClassModel {
     public void setLocation(String location) {
         this.location = location;
     }
+    public String getInstructor() {
+        return instructor;
+    }
+
+    public void setInstructor(String location) {
+        this.instructor = instructor;
+    }
 
     @NonNull
     @Override
@@ -58,6 +68,6 @@ public class ClassModel {
         return "Class: " + className + "\n"
                 + "Meeting Time: " + meetingTime + "\n"
                 + "Selected Days: " + selectedDays + "\n"
-                + "Location: " + location;
+                + "Location: " + location + "\n" + "Instructor: " + instructor;
     }
 }

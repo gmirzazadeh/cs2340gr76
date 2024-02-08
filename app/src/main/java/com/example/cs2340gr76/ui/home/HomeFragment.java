@@ -119,7 +119,7 @@ public class HomeFragment extends Fragment {
             String cleanString = selectedDaysArray[1].replaceAll("[\\[\\]\\s]", "");
             String[] daysOfClasses = cleanString.split(",");
             for(String day: daysOfClasses) {
-                String printString = classCharacteristics[0].split(": ")[1] +"\n" + classCharacteristics[1].split(": ")[1] +"\n" + classCharacteristics[3].split(": ")[1];
+                String printString = classCharacteristics[0].split(": ")[1] +"\n" + classCharacteristics[1].split(": ")[1] +"\n" + classCharacteristics[3].split(": ")[1] + "\n" + classCharacteristics[4].split(": ")[1];
                 if (day.equals("Monday")) {
                     binding.textviewClassesMON.setText(binding.textviewClassesMON.getText().toString() +"\n\n" + printString);
                 } else if (day.equals("Tuesday")) {

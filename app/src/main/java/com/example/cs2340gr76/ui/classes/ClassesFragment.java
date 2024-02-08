@@ -47,6 +47,7 @@ public class ClassesFragment extends Fragment {
             //String meetingDate = meetingDateEditText.getText().toString();
             String location = locationEditText.getText().toString();
             List<String> selectedDays = new ArrayList<>();
+            String instructor = binding.instructorName.getText().toString();
             if(binding.checkBoxMon.isChecked()) {
                 selectedDays.add("Monday");
             }
@@ -63,7 +64,7 @@ public class ClassesFragment extends Fragment {
                 selectedDays.add("Friday");
             }
             // Create a new class object
-            ClassModel newClass = new ClassModel(className, meetingTime, location, selectedDays);
+            ClassModel newClass = new ClassModel(className, meetingTime, location, selectedDays, instructor);
             classList.add(newClass);
 
             ArrayList<String> classListStrings = new ArrayList<>();
@@ -78,6 +79,7 @@ public class ClassesFragment extends Fragment {
             classNameEditText.setText("");
             meetingTimeEditText.setText("");
             locationEditText.setText("");
+            binding.instructorName.setText("");
             binding.checkBoxMon.setChecked(false);
             binding.checkBoxTues.setChecked(false);
             binding.checkBoxWed.setChecked(false);
